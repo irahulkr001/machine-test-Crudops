@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Dashboard</title>
+</head>
+<body>
+    <h1>Task Management System</h1>
+    <nav>
+    <a href="/task/">
+        Dashboard
+    </a>
+    |
+    <a href="/task/create/">
+        Add Task
+    </a>
+    |
+    <a href="/logout/">
+        Logout
+    </a>
+
+</nav>
+
+<hr>
+    <h2>Welcome, {{ request.user.username }}</h2>
+    <hr>
+    <h3>My Tasks</h3>
+    <a href="/task/create/">
+        Add New Task
+    </a>
+    <br><br>
+    <form method="get">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by title"
+            value="{{ search }}"
+        >
+        <select name="status">
+            <option value="">
+                All Status
+            </option>
+            <option
+                value="Todo"
+                {% if selected_status == 'Todo' %}selected{% endif %}
+            >
+                Todo
+            </option>
+            <option
+                value="In Progress"
+                {% if selected_status == 'In Progress' %}selected{% endif %}
+            >
+                In Progress
+            </option>
+            <option
+                value="Completed"
+                {% if selected_status == 'Completed' %}selected{% endif %}
+            >
+                Completed
+            </option>
+        </select>
+        <select name="priority">
+            <option value="">
+                All Priority
+            </option>
+            <option
+                value="Low"
+                {% if selected_priority == 'Low' %}selected{% endif %}
+            >
+                Low
+            </option>
+            <option
+                value="Medium"
+                {% if selected_priority == 'Medium' %}selected{% endif %}
+            >
+                Medium
+            </option>
+            <option
+                value="High"
+                {% if selected_priority == 'High' %}selected{% endif %}
+            >
+                High
+            </option>
+        </select>
+        <button type="submit">
+            Search / Filter
+        </button>
+    </form>
+    <br>
+    {% if tasks %}
+        {% for task in tasks %}
+            <div>
+                <h3>{{ task.title }}</h3>
+                <p>
+                    <strong>Description:</strong>
+                    {{ task.description }}
+                </p>
+                <p>
+                    <strong>Status:</strong>
+                    {{ task.status }}
+                </p>
+
+                <p>
+                    <strong>Priority:</strong>
+                    {{ task.priority }}
+                </p>
+
+                <p>
+                    <strong>Due Date:</strong>
+                    {{ task.due_date }}
+                </p>
+
+                <a href="/task/edit/{{ task.id }}/">
+                    Edit
+                </a>
+
+                |
+
+                <a href="/task/delete/{{ task.id }}/">
+                    Delete
+                </a>
+
+                <hr>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No tasks found.</p>
+
+    {% endif %}
+</body>
+</html>
